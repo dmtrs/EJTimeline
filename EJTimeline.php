@@ -29,7 +29,11 @@ class EJTimeline extends CWidget
      */
     public $CListViewConfig = array(
         'itemView'=>'_view',
-    ); 
+    );
+    /** 
+     * @var boolean if the model attribute representing the time is a unixtimestamp.
+     */
+    public $unixepoch = false;
     /** 
      * @var array the core scripts to register.
      * @since 0.1
@@ -87,8 +91,9 @@ class EJTimeline extends CWidget
         {
             $this->CActiveDataProviderConfig['criteria'] = clone($this->criteria);
             $this->CActiveDataProviderConfig['criteria']->compare($this->attribute, $m->{$this->attribute});
-
-            $h = date($this->headerFormat, strtotime($m->{$this->attribute}));
+            
+            $strotime = ($this->unixepoch) ? $m->{$this->attribute} : strtotime($m->{$this->attribute});
+            $h = date($this->headerFormat, $strtotime);
             $this->events[$h] = new CActiveDataProvider($this->modelName, $this->CActiveDataProviderConfig);
         }
         parent::init();
