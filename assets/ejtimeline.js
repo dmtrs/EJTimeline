@@ -77,12 +77,19 @@ function showWindow(data)
 	});
 	
 	$('body').append('<div id="windowBox"><div id="titleDiv">'+title+'</div>'+body+'<div id="date">'+date+'</div></div>');
-
+/**
 	$('#windowBox').css({
 		width:500,
 		height:350,
 		left: ($(window).width() - 500)/2,
 		top: ($(window).height() - 350)/2
-	});
+	});**/
+	$('#windowBox').css({
+        padding: '3em 2em 2em',
+        top: '1em',
+        left: '2em',
+        right: '2em',
+        height: '350px'
+    });
 	
 }
