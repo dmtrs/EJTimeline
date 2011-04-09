@@ -92,7 +92,7 @@ class EJTimeline extends CWidget
             $this->CActiveDataProviderConfig['criteria'] = clone($this->criteria);
             $this->CActiveDataProviderConfig['criteria']->compare($this->attribute, $m->{$this->attribute});
             
-            $strotime = ($this->unixepoch) ? $m->{$this->attribute} : strtotime($m->{$this->attribute});
+            $strtotime = ($this->unixepoch) ? $m->{$this->attribute} : strtotime($m->{$this->attribute});
             $h = date($this->headerFormat, $strtotime);
             $this->events[$h] = new CActiveDataProvider($this->modelName, $this->CActiveDataProviderConfig);
         }
