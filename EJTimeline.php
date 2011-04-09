@@ -81,8 +81,8 @@ class EJTimeline extends CWidget
         } else { 
             $this->criteria = new CDbCriteria();
         }
-        $m = $this->modelName;
-        $periods = $m::model()->findAll(array(
+        $model = new $this->modelName();
+        $periods = $model()->findAll(array(
             'group'=>$this->groupby,
             'select'=>$this->attribute,
         ));
