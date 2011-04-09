@@ -1,2 +1,13 @@
 EJTimeline
 ----------
+Yii framework extensions rendering a time line.
+
+###Details
+- Extensions author: Dimitrions Mengidis
+- Css and js author: Martin Angelov
+- Version: 0.1 initial release
+
+###Links
+- [Demo site](http://dmtrs.devio.us/blog/index.php/demo/ejtime)
+- [Github repository](https://github.com/dmtrs/EJTimeline)
+- [Advanced Event Timeline With PHP, CSS & jQuery](http://tutorialzine.com/2010/01/advanced-event-timeline-with-php-css-jquery/)  
