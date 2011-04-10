@@ -90,21 +90,13 @@ class EJTimeline extends CWidget
             ->select('distinct '.$this->groupby)
             ->from($tableName)
             ->queryAll();
-/**        $periods = $model->findAll(array(
-            'group'=>$this->groupby,
-            'select'=>$this->groupby,
-        ));**/
         
         foreach($periods as $m)
         {
             $t = $m[$this->groupby];
-            var_dump($t);
             $this->CActiveDataProviderConfig['criteria'] = clone($this->criteria);
- //           $this->CActiveDataProviderConfig['criteria']->compare($this->attribute, $m->{$this->attribute});       
             $this->CActiveDataProviderConfig['criteria']->addCondition($this->groupby." = '".$m[$this->groupby]."'");
             
-//            $strtotime = ($this->unixepoch) ? $m->{$this->attribute} : strtotime($m->{$this->attribute});
-//            $h = date($this->headerFormat, $strtotime);
             $h = date($this->headerFormat, strtotime($t));
             $this->events[$h] = new CActiveDataProvider($this->modelName, $this->CActiveDataProviderConfig);
         }
