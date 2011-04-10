@@ -83,18 +83,29 @@ class EJTimeline extends CWidget
         }
         $m = $this->modelName;
         $model = new $m();
-        $periods = $model->findAll(array(
+
+        $tableName = $model->tableName();
+
+        $periods = Yii::app()->db->createCommand()
+            ->select('distinct '.$this->groupby)
+            ->from($tableName)
+            ->queryAll();
+/**        $periods = $model->findAll(array(
             'group'=>$this->groupby,
-            'select'=>$this->attribute,
-        ));
+            'select'=>$this->groupby,
+        ));**/
         
         foreach($periods as $m)
         {
+            $t = $m[$this->groupby];
+            var_dump($t);
             $this->CActiveDataProviderConfig['criteria'] = clone($this->criteria);
-            $this->CActiveDataProviderConfig['criteria']->compare($this->attribute, $m->{$this->attribute});
+ //           $this->CActiveDataProviderConfig['criteria']->compare($this->attribute, $m->{$this->attribute});       
+            $this->CActiveDataProviderConfig['criteria']->addCondition($this->groupby." = '".$m[$this->groupby]."'");
             
-            $strtotime = ($this->unixepoch) ? $m->{$this->attribute} : strtotime($m->{$this->attribute});
-            $h = date($this->headerFormat, $strtotime);
+//            $strtotime = ($this->unixepoch) ? $m->{$this->attribute} : strtotime($m->{$this->attribute});
+//            $h = date($this->headerFormat, $strtotime);
+            $h = date($this->headerFormat, strtotime($t));
             $this->events[$h] = new CActiveDataProvider($this->modelName, $this->CActiveDataProviderConfig);
         }
         parent::init();
