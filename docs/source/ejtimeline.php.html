@@ -1,0 +1,207 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+
+<html lang="en">
+<head>
+
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<meta name="generator" content="PHPDoctor 2RC4 (http://peej.github.com/phpdoctor/)">
+<meta name="when" content="Tue, 12 Apr 2011 14:25:31 +0000">
+
+<link rel="stylesheet" type="text/css" href="../stylesheet.css">
+<link rel="start" href="../overview-summary.html">
+
+<title>EJTimeline.php (PHPDoctor)</title>
+
+</head>
+<body id="file" onload="parent.document.title=document.title;">
+
+<div class="header">
+<h1>PHPDoctor</h1>
+<ul>
+<li><a href="../overview-summary.html">Overview</a></li>
+<li>Package</li><li>Class</li><li>Tree</li><li><a href="../overview-files.html">Files</a></li>
+<li><a href="../deprecated-list.html">Deprecated</a></li>
+<li><a href="../todo-list.html">Todo</a></li>
+<li><a href="../index-all.html">Index</a></li>
+</ul>
+</div>
+
+<div class="small_links">
+<a href="../index.html" target="_top">Frames</a>
+<a href="../source/ejtimeline.php.html" target="_top">No frames</a>
+</div>
+<hr>
+
+<h1>EJTimeline.php</h1>
+<hr>
+
+<a name="line1"></a><pre><?php
+<a name="line2"></a>class EJTimeline extends CWidget
+<a name="line3"></a>{
+<a name="line4"></a>    /**  The model class name.
+<a name="line5"></a>     * @var string
+<a name="line6"></a>     * @since 0.1
+<a name="line7"></a>     */
+<a name="line8"></a>    public $modelName; 
+<a name="line9"></a>    /** Attriubte name containing date data. 
+<a name="line10"></a>     * @var string
+<a name="line11"></a>     * @since 0.1
+<a name="line12"></a>     */
+<a name="line13"></a>    public $attribute; 
+<a name="line14"></a>    /** SQL group condition for events grouping. Example: 'to_days(tl_timestamp)' for per day group.
+<a name="line15"></a>     * @var string
+<a name="line16"></a>     * @since 0.1
+<a name="line17"></a>     */
+<a name="line18"></a>    public $groupby;
+<a name="line19"></a>    /** Format of the header display. Will be used in the php date 1st param.
+<a name="line20"></a>     * @var string
+<a name="line21"></a>     * @since 0.1
+<a name="line22"></a>     */
+<a name="line23"></a>    public $headerFormat = "d/m/Y"; 
+<a name="line24"></a>    /** Config array for the events dataprovider of each period.
+<a name="line25"></a>     * @var array
+<a name="line26"></a>     * @since 0.1
+<a name="line27"></a>     */
+<a name="line28"></a>    public $CActiveDataProviderConfig = array();
+<a name="line29"></a>    /** CListView configuration for rendering the events.     
+<a name="line30"></a>     * @var array
+<a name="line31"></a>     * @since 0.1
+<a name="line32"></a>     */
+<a name="line33"></a>    public $CListViewConfig = array(
+<a name="line34"></a>        'itemView'=>'_view',
+<a name="line35"></a>    );
+<a name="line36"></a>    /** If attribute is in unixstamp format.
+<a name="line37"></a>     * @var boolean
+<a name="line38"></a>     * @since 0.1
+<a name="line39"></a>     */
+<a name="line40"></a>    public $unixepoch = false;
+<a name="line41"></a>    /** Core scripts to register, if not already.
+<a name="line42"></a>     * @var array
+<a name="line43"></a>     * @since 0.1
+<a name="line44"></a>     */
+<a name="line45"></a>    private $core = array('jquery', 'jquery.ui');
+<a name="line46"></a>    /** Css files to register
+<a name="line47"></a>     * @var array
+<a name="line48"></a>     * @since 0.1
+<a name="line49"></a>     */
+<a name="line50"></a>    private $css = array('ejtimeline.css');
+<a name="line51"></a>    /** Js files to register.
+<a name="line52"></a>     * @var array
+<a name="line53"></a>     * @since 0.1
+<a name="line54"></a>     */ 
+<a name="line55"></a>    private $js  = array('ejtimeline.js');
+<a name="line56"></a>    /** The asset folder after published.
+<a name="line57"></a>     * @var string
+<a name="line58"></a>     * @since 0.1
+<a name="line59"></a>     */
+<a name="line60"></a>    private $assets;
+<a name="line61"></a>    /** All properties that are required to be set.
+<a name="line62"></a>     * @var array
+<a name="line63"></a>     * @since 0.1
+<a name="line64"></a>     */
+<a name="line65"></a>    private $issetProperties = array(
+<a name="line66"></a>        'modelName', 'attribute','groupby'
+<a name="line67"></a>    );
+<a name="line68"></a>    /** Criteria for the CActiveDataProviders.
+<a name="line69"></a>     * @var CDbCriteria
+<a name="line70"></a>     */
+<a name="line71"></a>    private $criteria;
+<a name="line72"></a>    /**  'Key' => 'value' array. Key is the header and value is the dataprovider containt the events.
+<a name="line73"></a>     * @var arrray
+<a name="line74"></a>     */
+<a name="line75"></a>    private $events = array();
+<a name="line76"></a>
+<a name="line77"></a>    public function init()
+<a name="line78"></a>    {
+<a name="line79"></a>        $this->checkProperties();
+<a name="line80"></a>        $this->registerScripts();     
+<a name="line81"></a>
+<a name="line82"></a>        if(isset($this->CActiveDataProviderConfig['criteria'])) {
+<a name="line83"></a>            $c = $this->CActiveDataProviderConfig['criteria'];
+<a name="line84"></a>            $this->criteria = ($c instanceof CDbCriteria) ? $c : new CDbCriteria($c);
+<a name="line85"></a>        } else { 
+<a name="line86"></a>            $this->criteria = new CDbCriteria();
+<a name="line87"></a>        }
+<a name="line88"></a>        $m = $this->modelName;
+<a name="line89"></a>        $model = new $m();
+<a name="line90"></a>
+<a name="line91"></a>        $tableName = $model->tableName();
+<a name="line92"></a>
+<a name="line93"></a>        $periods = Yii::app()->db->createCommand()
+<a name="line94"></a>            ->select('distinct '.$this->groupby)
+<a name="line95"></a>            ->from($tableName)
+<a name="line96"></a>            ->queryAll();
+<a name="line97"></a>        
+<a name="line98"></a>        foreach($periods as $m)
+<a name="line99"></a>        {
+<a name="line100"></a>            $t = $m[$this->groupby];
+<a name="line101"></a>            $this->CActiveDataProviderConfig['criteria'] = clone($this->criteria);
+<a name="line102"></a>            $this->CActiveDataProviderConfig['criteria']->addCondition($this->groupby." = '".$m[$this->groupby]."'");
+<a name="line103"></a>            
+<a name="line104"></a>            $h = date($this->headerFormat, strtotime($t));
+<a name="line105"></a>            $this->events[$h] = new CActiveDataProvider($this->modelName, $this->CActiveDataProviderConfig);
+<a name="line106"></a>        }
+<a name="line107"></a>        parent::init();
+<a name="line108"></a>    }
+<a name="line109"></a>    public function run()
+<a name="line110"></a>    {
+<a name="line111"></a>        if(!empty($this->events)) {
+<a name="line112"></a>            $this->render('index', array(
+<a name="line113"></a>                'events'=>$this->events, 'config'=>$this->CListViewConfig
+<a name="line114"></a>            ));
+<a name="line115"></a>        }
+<a name="line116"></a>    }
+<a name="line117"></a>    private function checkProperties()
+<a name="line118"></a>    {
+<a name="line119"></a>        foreach($this->issetProperties as $p)
+<a name="line120"></a>        {
+<a name="line121"></a>            if(!isset($this->$p)) 
+<a name="line122"></a>                throw new CException($p." property must be set.");
+<a name="line123"></a>        }
+<a name="line124"></a>    }
+<a name="line125"></a>    private function registerScripts()
+<a name="line126"></a>    {
+<a name="line127"></a>        $cs = Yii::app()->clientScript;
+<a name="line128"></a>        $assets = dirname(__FILE__).DIRECTORY_SEPARATOR."assets".DIRECTORY_SEPARATOR;
+<a name="line129"></a>        $this->assets = Yii::app()->getAssetManager()->publish($assets);
+<a name="line130"></a>
+<a name="line131"></a>        foreach($this->css as $file)
+<a name="line132"></a>        {
+<a name="line133"></a>            $cs->registerCssFile($this->assets."/".$file);
+<a name="line134"></a>        }
+<a name="line135"></a>        foreach($this->core as $file) 
+<a name="line136"></a>        {
+<a name="line137"></a>            if(!$cs->isScriptRegistered($file)) {
+<a name="line138"></a>                $cs->registerCoreScript($file);
+<a name="line139"></a>            }
+<a name="line140"></a>        }
+<a name="line141"></a>        foreach($this->js as $file)
+<a name="line142"></a>        {
+<a name="line143"></a>            $cs->registerScriptFile($this->assets."/".$file, CClientScript::POS_END);
+<a name="line144"></a>        }
+<a name="line145"></a>    }
+<a name="line146"></a>}
+<a name="line147"></a></pre>
+<div class="header">
+<h1>PHPDoctor</h1>
+<ul>
+<li><a href="../overview-summary.html">Overview</a></li>
+<li>Package</li><li>Class</li><li>Tree</li><li><a href="../overview-files.html">Files</a></li>
+<li><a href="../deprecated-list.html">Deprecated</a></li>
+<li><a href="../todo-list.html">Todo</a></li>
+<li><a href="../index-all.html">Index</a></li>
+</ul>
+</div>
+
+<div class="small_links">
+<a href="../index.html" target="_top">Frames</a>
+<a href="../source/ejtimeline.php.html" target="_top">No frames</a>
+</div>
+<hr>
+
+<p id="footer">This document was generated by <a href="http://peej.github.com/phpdoctor/">PHPDoctor: The PHP Documentation Creator</a></p>
+
+</body>
+
+</html>

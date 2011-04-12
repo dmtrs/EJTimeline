@@ -1,72 +1,76 @@
 <?php
 class EJTimeline extends CWidget
 {
-    /** 
-     * @var string the class name of the model.
+    /**  The model class name.
+     * @var string
      * @since 0.1
      */
     public $modelName; 
-    /** 
-     * @var string the attibute name containing a timestamp.
+    /** Attriubte name containing date data. 
+     * @var string
      * @since 0.1
      */
     public $attribute; 
-    /** 
-     * @var string the group by condition. example: 'to_days(tl_timestamp)' if you want per day.    
+    /** SQL group condition for events grouping. Example: 'to_days(tl_timestamp)' for per day group.
+     * @var string
      * @since 0.1
      */
     public $groupby;
-    /**
-     * @var string the format of the header part. will be used to date function as 1st param.
+    /** Format of the header display. Will be used in the php date 1st param.
+     * @var string
+     * @since 0.1
      */
     public $headerFormat = "d/m/Y"; 
-    /** 
-     * @var array config array that will be used to in a CActiveDataProvider to retrieve all event sets.
+    /** Config array for the events dataprovider of each period.
+     * @var array
+     * @since 0.1
      */
     public $CActiveDataProviderConfig = array();
-    /** 
-     * @var array config array that will be used in the CListView rendering events.    
+    /** CListView configuration for rendering the events.     
+     * @var array
+     * @since 0.1
      */
     public $CListViewConfig = array(
         'itemView'=>'_view',
     );
-    /** 
-     * @var boolean if the model attribute representing the time is a unixtimestamp.
+    /** If attribute is in unixstamp format.
+     * @var boolean
+     * @since 0.1
      */
     public $unixepoch = false;
-    /** 
-     * @var array the core scripts to register.
+    /** Core scripts to register, if not already.
+     * @var array
      * @since 0.1
      */
     private $core = array('jquery', 'jquery.ui');
-    /**
-     * @var array css files to register.
+    /** Css files to register
+     * @var array
      * @since 0.1
      */
     private $css = array('ejtimeline.css');
-    /**
-     * @var array the js files to register.
+    /** Js files to register.
+     * @var array
      * @since 0.1
      */ 
     private $js  = array('ejtimeline.js');
-    /** 
-     * @var string The asset folder after published.
+    /** The asset folder after published.
+     * @var string
      * @since 0.1
      */
     private $assets;
-    /** 
-     * @var array all the properties of this widget that must be set.
+    /** All properties that are required to be set.
+     * @var array
      * @since 0.1
      */
     private $issetProperties = array(
         'modelName', 'attribute','groupby'
     );
-    /** 
-     * @var CDbCriteria the criteria for event CActiveDataProviders.
+    /** Criteria for the CActiveDataProviders.
+     * @var CDbCriteria
      */
     private $criteria;
-    /** 
-     * @var arrray key=>value array where key is the header and value is the dataprovider for the event.
+    /**  'Key' => 'value' array. Key is the header and value is the dataprovider containt the events.
+     * @var arrray
      */
     private $events = array();
 
