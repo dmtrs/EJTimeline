@@ -1,4 +1,4 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Frameset//EN" "http://www.w3.org/TR/html4/frameset.dtd">
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
 
 <html lang="en">
 <head>
@@ -6,32 +6,170 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
 <meta name="generator" content="PHPDoctor 2RC4 (http://peej.github.com/phpdoctor/)">
-<meta name="when" content="Tue, 12 Apr 2011 14:25:31 +0000">
+<meta name="when" content="Wed, 13 Apr 2011 15:58:18 +0000">
 
-<link rel="stylesheet" type="text/css" href="stylesheet.css">
-<link rel="start" href="overview-summary.html">
+<link rel="stylesheet" type="text/css" href="./stylesheet.css">
 
-<title>PHPDoctor</title>
+<title>EJTimeline Documentation</title>
 
 </head>
-		
-<frameset cols="20%,80%">
+<body id="definition" onload="parent.document.title=document.title;">
 
-<frameset rows="30%,70%">
+<a href="https:://github.com/dmtrs/EJTimeline/blob/master/EJTimeline.php#L2" class="location">EJTimeline.php at line 2</a>
 
-<frame src="overview-frame.html" name="packagelist">
-<frame src="allitems-frame.html" name="index">
+<h1>Class EJTimeline</h1>
 
-</frameset>
+<pre class="tree">CWidget<br> └─<strong>EJTimeline</strong><br /></pre>
 
-<frame src="overview-summary.html" name="main">
+<hr>
 
-<noframes>
-    <body>
-        <h2>Frame Alert</h2>
-        <p>This document is designed to be viewed using frames. If you see this message, you are using a non-frame-capable browser.<br>
-        Link to <a href="overview-summary.html">Non-frame version</a>.</p>
-    </body>
-</noframes>
+<p class="signature">public  class <strong>EJTimeline</strong><br>extends CWidget
 
-</frameset></html>
+</p>
+
+<hr>
+
+<table id="summary_field">
+<tr><th colspan="2">Field Summary</th></tr>
+<tr>
+<td class="type"> array</td>
+<td class="description"><p class="name"><a href="#CActiveDataProviderConfig">$CActiveDataProviderConfig</a></p><p class="description">Config array for the events dataprovider of each period.
+</p></td>
+</tr>
+<tr>
+<td class="type"> array</td>
+<td class="description"><p class="name"><a href="#CListViewConfig">$CListViewConfig</a></p><p class="description">CListView configuration for rendering the events.
+</p></td>
+</tr>
+<tr>
+<td class="type"> string</td>
+<td class="description"><p class="name"><a href="#attribute">$attribute</a></p><p class="description">Attriubte name containing date data.
+</p></td>
+</tr>
+<tr>
+<td class="type"> string</td>
+<td class="description"><p class="name"><a href="#groupby">$groupby</a></p><p class="description">SQL group condition for events grouping.
+</p></td>
+</tr>
+<tr>
+<td class="type"> string</td>
+<td class="description"><p class="name"><a href="#headerFormat">$headerFormat</a></p><p class="description">Format of the header display.
+</p></td>
+</tr>
+<tr>
+<td class="type"> string</td>
+<td class="description"><p class="name"><a href="#modelName">$modelName</a></p><p class="description">The model class name.
+</p></td>
+</tr>
+<tr>
+<td class="type"> boolean</td>
+<td class="description"><p class="name"><a href="#unixepoch">$unixepoch</a></p><p class="description">If group by result is in unixepoch format.
+</p></td>
+</tr>
+</table>
+
+<h2 id="detail_field">Field Detail</h2>
+<a href="https:://github.com/dmtrs/EJTimeline/blob/master/EJTimeline.php#L30" class="location">EJTimeline.php at line 30</a>
+
+<h3 id="CActiveDataProviderConfig">CActiveDataProviderConfig</h3>
+<code class="signature">public  array <strong>$CActiveDataProviderConfig</strong> = array()</code>
+<div class="details">
+<p>Config array for the events dataprovider of each period.</p>
+<dl>
+<dt>Since:</dt>
+<dd>0.1</dd>
+</dl>
+</div>
+
+<hr>
+
+<a href="https:://github.com/dmtrs/EJTimeline/blob/master/EJTimeline.php#L35" class="location">EJTimeline.php at line 35</a>
+
+<h3 id="CListViewConfig">CListViewConfig</h3>
+<code class="signature">public  array <strong>$CListViewConfig</strong> = array()</code>
+<div class="details">
+<p>CListView configuration for rendering the events. Default itemView set to _view.</p>
+<dl>
+<dt>Since:</dt>
+<dd>0.1</dd>
+</dl>
+</div>
+
+<hr>
+
+<a href="https:://github.com/dmtrs/EJTimeline/blob/master/EJTimeline.php#L13" class="location">EJTimeline.php at line 13</a>
+
+<h3 id="attribute">attribute</h3>
+<code class="signature">public  string <strong>$attribute</strong></code>
+<div class="details">
+<p>Attriubte name containing date data.</p>
+<dl>
+<dt>Since:</dt>
+<dd>0.1</dd>
+</dl>
+</div>
+
+<hr>
+
+<a href="https:://github.com/dmtrs/EJTimeline/blob/master/EJTimeline.php#L19" class="location">EJTimeline.php at line 19</a>
+
+<h3 id="groupby">groupby</h3>
+<code class="signature">public  string <strong>$groupby</strong></code>
+<div class="details">
+<p>SQL group condition for events grouping. 
+ Example: 'to_days(tl_timestamp)' for per day group.</p>
+<dl>
+<dt>Since:</dt>
+<dd>0.1</dd>
+</dl>
+</div>
+
+<hr>
+
+<a href="https:://github.com/dmtrs/EJTimeline/blob/master/EJTimeline.php#L25" class="location">EJTimeline.php at line 25</a>
+
+<h3 id="headerFormat">headerFormat</h3>
+<code class="signature">public  string <strong>$headerFormat</strong></code>
+<div class="details">
+<p>Format of the header display. 
+ Will be used in the php date 1st param. If not set the events will be grouped per attribute.</p>
+<dl>
+<dt>Since:</dt>
+<dd>0.1</dd>
+</dl>
+</div>
+
+<hr>
+
+<a href="https:://github.com/dmtrs/EJTimeline/blob/master/EJTimeline.php#L8" class="location">EJTimeline.php at line 8</a>
+
+<h3 id="modelName">modelName</h3>
+<code class="signature">public  string <strong>$modelName</strong></code>
+<div class="details">
+<p>The model class name.</p>
+<dl>
+<dt>Since:</dt>
+<dd>0.1</dd>
+</dl>
+</div>
+
+<hr>
+
+<a href="https:://github.com/dmtrs/EJTimeline/blob/master/EJTimeline.php#L45" class="location">EJTimeline.php at line 45</a>
+
+<h3 id="unixepoch">unixepoch</h3>
+<code class="signature">public  boolean <strong>$unixepoch</strong> = false</code>
+<div class="details">
+<p>If group by result is in unixepoch format.
+ If you set headerFormat then the php date function is used to format the header.
+ So if the results for each group is in unixepoch ( either the result of group
+ by if set, or either you have no group by set and then the attribute is in unixepoch )
+ and you need headerFormat turn this variable to true.</p>
+<dl>
+<dt>Since:</dt>
+<dd>0.1</dd>
+</dl>
+</div>
+
+</body>
+</html>
