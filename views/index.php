@@ -3,14 +3,16 @@
     <?php
     foreach($events as $y=>$e)
     {
-        echo "<div class='event'>";
-        echo "<div class='eventHeading' >$y</div>";
-        echo '<ul class="eventList">';
-        $config['dataProvider']= $e;
-        $config['viewData']= array('dt'=>$y);
-        $this->widget('zii.widgets.CListView', $config);
-        echo "</ul>";
-        echo "</div>";
+         foreach($e as $dp) {
+            echo "<div class='event'>";
+            echo "<div class='eventHeading' >$y</div>";
+            echo '<ul class="eventList">';
+            $config['dataProvider']= $dp;
+            $config['viewData']= array('dt'=>$y);
+            $this->widget('zii.widgets.CListView', $config);
+            echo "</ul>";
+            echo "</div>";
+        }
     }?>
         <div class="clear"></div>
         </div>

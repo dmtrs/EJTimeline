@@ -11,35 +11,41 @@ class EJTimeline extends CWidget
      * @since 0.1
      */
     public $attribute; 
-    /** SQL group condition for events grouping. Example: 'to_days(tl_timestamp)' for per day group.
+    /** SQL group condition for events grouping. 
+     * Example: 'to_days(tl_timestamp)' for per day group.
      * @var string
      * @since 0.1
      */
     public $groupby;
-    /** Format of the header display. Will be used in the php date 1st param.
+    /** Format of the header display. 
+     * Will be used in the php date 1st param. If not set the events will be grouped per attribute.
      * @var string
      * @since 0.1
      */
-    public $headerFormat = "d/m/Y"; 
+    public $headerFormat;
     /** Config array for the events dataprovider of each period.
      * @var array
      * @since 0.1
      */
     public $CActiveDataProviderConfig = array();
-    /** CListView configuration for rendering the events.     
+    /** CListView configuration for rendering the events. Default itemView set to _view.
      * @var array
      * @since 0.1
      */
-    public $CListViewConfig = array(
-        'itemView'=>'_view',
-    );
-    /** If attribute is in unixstamp format.
+    public $CListViewConfig = array();
+    /** If group by result is in unixepoch format.
+     * If you set headerFormat then the php date function is used to format the header.
+     * So if the results for each group is in unixepoch ( either the result of group
+     * by if set, or either you have no group by set and then the attribute is in unixepoch )
+     * and you need headerFormat turn this variable to true.
+     * 
      * @var boolean
      * @since 0.1
      */
     public $unixepoch = false;
     /** Core scripts to register, if not already.
      * @var array
+     * @deprecated
      * @since 0.1
      */
     private $core = array('jquery', 'jquery.ui');
@@ -63,7 +69,7 @@ class EJTimeline extends CWidget
      * @since 0.1
      */
     private $issetProperties = array(
-        'modelName', 'attribute','groupby'
+        'modelName', 'attribute',//'groupby'
     );
     /** Criteria for the CActiveDataProviders.
      * @var CDbCriteria
@@ -89,26 +95,37 @@ class EJTimeline extends CWidget
         $model = new $m();
 
         $tableName = $model->tableName();
-
-        $periods = Yii::app()->db->createCommand()
-            ->select('distinct '.$this->groupby)
-            ->from($tableName)
-            ->queryAll();
         
+        $group = (isset($this->groupby)) ? $this->groupby : $this->attribute ;
+        $sqlCommand = Yii::app()->db->createCommand()
+                ->select($group)
+                ->from($tableName);
+        $sqlCommand->distinct = true;        
+        $periods = $sqlCommand->queryAll();
+
         foreach($periods as $m)
-        {
-            $t = $m[$this->groupby];
+        {           
+            $t = $m[$group];
             $this->CActiveDataProviderConfig['criteria'] = clone($this->criteria);
-            $this->CActiveDataProviderConfig['criteria']->addCondition($this->groupby." = '".$m[$this->groupby]."'");
+            $this->CActiveDataProviderConfig['criteria']->addCondition($group." = '".$m[$group]."'");
             
-            $h = date($this->headerFormat, strtotime($t));
-            $this->events[$h] = new CActiveDataProvider($this->modelName, $this->CActiveDataProviderConfig);
+            
+            if (isset($this->headerFormat)) {
+                $timestamp = ($this->unixepoch) ? $t : strtotime($t);
+                $h = date( $this->headerFormat , $timestamp);
+            } else {
+                $h = $m[$group];
+            }
+            $this->events[$h][] = new CActiveDataProvider($this->modelName, $this->CActiveDataProviderConfig);
         }
         parent::init();
     }
     public function run()
     {
         if(!empty($this->events)) {
+            if(!isset($this->CListViewConfig['itemView'])) 
+                $this->CListViewConfig['itemView'] = '_view';
+
             $this->render('index', array(
                 'events'=>$this->events, 'config'=>$this->CListViewConfig
             ));
